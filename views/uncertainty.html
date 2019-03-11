@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="shortcut icon" href="../static/img/favicon.ico">
+
+  <title>Uncertainty</title>
+
+  <link rel="stylesheet" href="../static/uncertainty/styles/bootstrap.min.css">
+
+  <link rel="stylesheet" href="../static/uncertainty/styles/my.css">
+
+  <style>
+
+    .tooltip2 {
+      position: absolute;
+      width: 350px;
+      height: 800px;
+      padding: 10px;
+      top: 100px;
+      background-color: white;
+      -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+      -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
+    .tooltip2 p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 20px;
+    }
+
+    #dist1 {
+
+      left: 850px;
+    }
+
+    #dist2 {
+
+      left: 1200px;
+    }
+
+    #dist3 {
+
+      left: 1550px;
+    }
+
+    /* boxplot shapes */
+    .boxplot line {
+      stroke: #333;
+      stroke-width: 1px;
+    }
+
+    g.whisker circle,
+    .whole-box {
+      stroke: #333;
+      stroke-width: 3px;
+      fill: none;
+    }
+
+    .half-box {
+      fill: white;
+      stroke: none;
+      fill-opacity: 0.1;
+    }
+
+    .center-line {
+      stroke-dasharray: 3, 3;
+    }
+
+    g.whisker:hover line,
+    g.whisker:hover circle {
+      stroke-width: 2px;
+    }
+
+    /* boxplot outliers */
+    g.outlier circle {
+      fill: #fff;
+      stroke: #aaa;
+      fill-opacity: 0.2;
+    }
+
+    g.highlight circle {
+      fill: yellow;
+      stroke: #999;
+      fill-opacity: 1;
+    }
+
+    /* boxplot labels */
+    .label {
+      fill: #999;
+      text-anchor: middle;
+      opacity: 1;
+    }
+
+    g:hover > .label,
+    g.highlight > .label {
+      opacity: 1;
+    }
+
+    /* axis */
+    .axis path, .axis line {
+      fill: none;
+      stroke: #999;
+      stroke-width: 1px;
+      shape-rendering: crispEdges;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<div class="wrapper">
+  <div id="content">
+    <div id="main" style="position: absolute;top:0;width: 100%"></div>
+  </div>
+</div>
+
+
+<script src="../static/uncertainty/libs/chain_table.js" charset="utf-8"></script>
+
+<script src="../static/uncertainty/libs/math.js" charset="utf-8"></script>
+
+<script src="../static/uncertainty/libs/d3.js" charset="utf-8"></script>
+
+<script src="../static/uncertainty/libs/box_plot.js" charset="utf-8"></script>
+
+<script src="../static/uncertainty/libs/d3-scale-chromatic.v0.3.min.js"></script>
+
+<script src="../static/uncertainty/libs/jquery-2.2.0.min.js" charset="utf-8"></script>
+
+<script src="../static/uncertainty/libs/proper.js" charset="utf-8"></script>
+
+<script src='../static/uncertainty/libs/mapbox_gl.js'></script>
+
+<script src='../static/uncertainty/libs/DBSCAN.js'></script>
+
+<script src="../static/uncertainty/libs/bootstrap.min.js"></script>
+
+<script src='../static/uncertainty/libs/turf.min.js' charset='utf-8'></script>
+
+<script src='../static/uncertainty/scripts/yolk_transfer_plot.js'></script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+#significant .title {
+  text-anchor: end;
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+#significant .axis_sign text {
+  font-family: sans-serif;
+  font-size: 8px;
+  fill: black;
+}
+
+#significant .se_label {
+  position: absolute;
+  width: auto;
+  height: auto;
+}
+
+#significant .select {
+  position: absolute;
+  height: 25px;
+  width: auto;
+  font-size: 5px;
+
+}
+
+#significant .option {
+  font-size: 5px;
+}
+
+#update_button {
+  position: absolute;
+  top: 10px;
+  height: 25px;
+  width: auto;
+  border-radius: 5px;
+}

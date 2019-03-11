@@ -1,0 +1,104 @@
+#map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  cursor: hand;
+  background-color: #323232;
+}
+
+#button_group {
+  position: absolute;
+  pointer-events: auto;
+  left: 11px;
+  top: 100px;
+  z-index: 1;
+}
+
+#liner_svg {
+  position: absolute;
+  z-index: 1;
+  left: 11px;
+  top: 380px;
+  width: 30px;
+  height: 150px;
+  border-radius: 5px;
+}
+
+#map_container .text_speed {
+  fill: black;
+  text-anchor: start;
+  font-family: sans-serif;
+  font-size: 10px;
+}
+
+#map_container ._button {
+  background-color: #F5F5F5;
+  border: 1px solid #DFE5E9;
+  display: inline-block;
+  padding: 10px 5px;
+  border-top: none;
+  cursor: pointer;
+}
+
+#map_container .head {
+  border-radius: 5px 5px 0 0;
+  border-top: 1px solid #DFE5E9;
+}
+
+#map_container .end {
+  border-radius: 0 0 5px 5px;
+  border-top: 1px solid #DFE5E9;
+}
+
+#map_container img {
+  width: 20px;
+  height: 20px;
+}
+
+#searcherDIV {
+  position: absolute;
+  pointer-events: auto;
+  right: 20px;
+  top: 15px;
+}
+
+#searcherHintDIV {
+  position: absolute;
+  pointer-events: auto;
+  background-color: snow;
+  display: none;
+  max-height: 200px;
+  overflow: auto;
+}
+
+#map_container .PopupDivUl {
+  margin: 0;
+}
+
+#map_container .PopupDivLi {
+  display: inline;
+  padding-right: 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+#searcherInput {
+  width: 140px;
+  box-sizing: content-box;
+}
+
+#time_brush {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 80px;
+  bottom: 0;
+}
+
+.brush {
+  fill: gray;
+  fill-opacity: 0.3;
+}

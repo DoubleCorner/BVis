@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>canvas</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+</style>
+<canvas></canvas>
+<script type="text/javascript">
+
+  class Circle {
+    constructor(cx, cy, dx, dy, radius, strokeColor, strokeWidth) {
+      this.cx = cx;
+      this.cy = cy;
+      this.dx = dx;
+      this.dy = dy;
+      this.radius = radius;
+      this.stroke = strokeColor;
+      this.strokeWidth = strokeWidth;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.cx, this.cy, this.radius, 0, Math.PI / 180 * 360, false);
+      ctx.strokeStyle = this.stroke;
+      ctx.lineWidth = this.strokeWidth;
+      ctx.stroke();
+    }
+
+    update() {
+      if (this.cx + this.radius > canvas.width || this.cx - this.radius < 0) {
+        this.dx = -this.dx;
+      }
+      if (this.cy + this.radius > canvas.height || this.cy - this.radius < 0) {
+        this.dy = -this.dy;
+      }
+      this.cx += this.dx;
+      this.cy += this.dy;
+      this.draw();
+    }
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    circleList.forEach(function (item) {
+      item.update();
+    })
+  }
+
+  let canvas = document.querySelector("canvas");
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+  let ctx = canvas.getContext("2d");
+  let circleList = [];
+  for (let i = 0; i !== 50; i++) {
+    let cx = Math.random() * canvas.width;
+    let cy = Math.random() * canvas.height;
+    let dx = Math.random() * 5;
+    let dy = Math.random() * 5;
+    let radius = Math.random() * 50 + 20;
+    let strokeColor = '#' + Math.floor(Math.random() * 0xffffff).toString(16);
+    let strokeWidth = Math.random() * 3;
+    circleList.push(new Circle(cx, cy, dx, dy, radius, strokeColor, strokeWidth));
+  }
+  animate();
+</script>
+<body>
+</body>
+</html>
