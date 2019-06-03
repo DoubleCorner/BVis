@@ -21,7 +21,7 @@ function SearchHintClass() {
   function loadNameArray() {
     if (NameArrayType === 0) {
       for (var i = 0; i !== stations_info.length; i++) {
-        NameArray.push(stations_info[i].station_name);
+        NameArray.push(stations_info[i].station_id);
       }
       for (i = 0; i !== routes_info.length; i++) {
         NameArray.push(routes_info[i].sub_route_id);
@@ -81,7 +81,7 @@ function SearchHintClass() {
     item.onclick = function onClick(name) {
       return function () {
         for (var i = 0; i !== stations_info.length; i++) {
-          if (stations_info[i].station_name === name) {
+          if (stations_info[i].station_id === name) {
             map_view.showStation(stations_info[i]);
             break;
           }

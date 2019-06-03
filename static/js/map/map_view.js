@@ -13,7 +13,11 @@ function MapViewClass() {
       minZoom: 5
     });
   //公有属性：
-  self.map = new L.Map('map').addLayer(osm).setView(new L.LatLng(31.457514, 104.753437), 10);
+  self.map = new L.Map('map', {
+    preferCanvas: true,
+    attributionControl: false,
+    zoomControl: false
+  }).addLayer(osm).setView(new L.LatLng(31.457514, 104.753437), 10);
   //工具编号
   self.ctrl_box_type = 0;
   //私有属性
@@ -27,7 +31,7 @@ function MapViewClass() {
   var mouse_move = false;
   var mouse_down_point;
   var mouse_up_point;
-  var speed_color = d3.interpolate("red", "green");
+  var speed_color = d3.interpolate('red', 'green');
   var time_extent = [new Date('2016-1-1'), new Date('2016-2-1')];
   var reflect = d3.scale.linear()
     .domain([5, 45])
@@ -58,12 +62,12 @@ function MapViewClass() {
     if (station_markers.get(station.station_id) === null) {
       var latlng = L.latLng(station.latitude, station.longitude);
       var style = stationStyle(station.routes_number);
-      var marker = L.circleMarker(latlng, style).bindPopup(newPopupDiv(station)).addTo(self.map);
-      marker.on("click", function () {
+      var marker = L.marker(latlng, style).bindPopup(newPopupDiv(station)).addTo(self.map);
+      marker.on('click', function () {
         stay_time_view.showStationStayTime(station);
         if (current_station_marker !== null)
-          current_station_marker.setStyle({fillColor: "#FDBB84"});
-        marker.setStyle({fillColor: "#2EE0FF"});
+          current_station_marker.setStyle({fillColor: '#FDBB84'});
+        marker.setStyle({fillColor: '#2EE0FF'});
         current_station_marker = marker;
       });
       station_markers.set(station.station_id, marker);
@@ -104,7 +108,7 @@ function MapViewClass() {
     } else {
       sub_route_markers.get(sub_route_id).forEach(function (item) {
         updateSectionSpeedWithRoute(sub_route_id, item.marker, item.section);
-      })
+      });
     }
   };
 
@@ -126,8 +130,7 @@ function MapViewClass() {
         removeSection(item.section_id);
       });
       network_show_flag = false;
-    }
-    else {
+    } else {
       sections_info.forEach(function (item) {
         var path = JSON.parse(item.path);
         createSectionSpeedNoRoute(item, path);
@@ -176,11 +179,11 @@ function MapViewClass() {
   //更新带有线路信息的路段速度
   function updateSectionSpeedWithRoute(sub_route_id, section_marker, section) {
     $.ajax({
-      type: "get",
-      url: "/section_run_data/with_route",
-      dataType: "json",
+      type: 'get',
+      url: '/section_run_data/with_route',
+      dataType: 'json',
       async: true,
-      contentType: "application/json",
+      contentType: 'application/json',
       data: {
         'sub_route_id': sub_route_id,
         'section_id': section.section_id,
@@ -195,11 +198,11 @@ function MapViewClass() {
             opacity: 1
           });
         } else {
-          section_marker.setStyle({color: "gray", weight: 2, opacity: 1});
+          section_marker.setStyle({color: 'gray', weight: 2, opacity: 1});
         }
       },
       Error: function () {
-        console.log("获取数据失败");
+        console.log('获取数据失败');
       }
     });
   }
@@ -207,11 +210,11 @@ function MapViewClass() {
   //创建带有线路信息的路段速度
   function createSectionSpeedWithRoute(sub_route_id, path, section) {
     $.ajax({
-      type: "get",
-      url: "/section_run_data/with_route",
-      dataType: "json",
+      type: 'get',
+      url: '/section_run_data/with_route',
+      dataType: 'json',
       async: true,
-      contentType: "application/json",
+      contentType: 'application/json',
       data: {
         'sub_route_id': sub_route_id,
         'section_id': section.section_id,
@@ -224,23 +227,22 @@ function MapViewClass() {
             color: speed_color(reflect(ave_speed)),
             weight: 3,
             opacity: 1
-          }).bindPopup("ID：" + section.section_id + "<br>" + section.from_name + "——" + section.target_name + "<br>MS : " + ave_speed + " km/h").addTo(self.map);
-        }
-        else {
+          }).bindPopup('ID：' + section.section_id + '<br>' + section.from_name + '——' + section.target_name + '<br>MS : ' + ave_speed + ' km/h').addTo(self.map);
+        } else {
           section_marker = L.polyline(path, {
-            color: "gray",
+            color: 'gray',
             weight: 3,
             opacity: 1
-          }).bindPopup("ID：" + section.section_id + "<br>" + section.from_name + "——" + section.target_name + "<br>MS ：no data!").addTo(self.map);
+          }).bindPopup('ID：' + section.section_id + '<br>' + section.from_name + '——' + section.target_name + '<br>MS ：no data!').addTo(self.map);
         }
-        section_marker.on("click", function () {
+        section_marker.on('click', function () {
           section_speed_view.getSectionAllSpeed(section);
           if (current_section_marker !== null)
             if (ave_speed !== -1)
               current_section_marker.setStyle({weight: 3, color: speed_color(reflect(ave_speed))});
             else
-              current_section_marker.setStyle({weight: 3, color: "gray"});
-          section_marker.setStyle({weight: 5, color: "#2EE0FF"});
+              current_section_marker.setStyle({weight: 3, color: 'gray'});
+          section_marker.setStyle({weight: 5, color: '#2EE0FF'});
           current_section_marker = section_marker;
         });
         var section_list = sub_route_markers.get(sub_route_id);
@@ -248,7 +250,7 @@ function MapViewClass() {
         sub_route_markers.set(sub_route_id, section_list);
       },
       Error: function () {
-        console.log("获取数据失败");
+        console.log('获取数据失败');
       }
     });
   }
@@ -256,11 +258,11 @@ function MapViewClass() {
   //更新不带线路信息的路段速度
   function updateSectionSpeedNoRoute(section) {
     $.ajax({
-      type: "get",
-      url: "/section_run_data/no_route",
-      dataType: "json",
+      type: 'get',
+      url: '/section_run_data/no_route',
+      dataType: 'json',
       async: true,
-      contentType: "application/json",
+      contentType: 'application/json',
       data: {
         'section_id': section.section_id,
         'start_time': time_extent[0].getTime(),
@@ -274,7 +276,7 @@ function MapViewClass() {
             opacity: 1
           });
         } else {
-          section_markers.get(section.section_id).setStyle({color: "gray", weight: 2, opacity: 1});
+          section_markers.get(section.section_id).setStyle({color: 'gray', weight: 2, opacity: 1});
         }
       }
     });
@@ -283,11 +285,11 @@ function MapViewClass() {
   //创建不带线路信息的路段速度
   function createSectionSpeedNoRoute(section, path) {
     $.ajax({
-      type: "get",
-      url: "/section_run_data/no_route",
-      dataType: "json",
+      type: 'get',
+      url: '/section_run_data/no_route',
+      dataType: 'json',
       async: true,
-      contentType: "application/json",
+      contentType: 'application/json',
       data: {
         'section_id': section.section_id,
         'start_time': time_extent[0].getTime(),
@@ -299,38 +301,37 @@ function MapViewClass() {
             color: speed_color(reflect(ave_speed)),
             weight: 2,
             opacity: 1
-          }).bindPopup("ID：" + section.section_id + "<br>" + section.from_name + "——" + section.target_name + "<br>MS ：" + ave_speed + " km/h")
+          }).bindPopup('ID：' + section.section_id + '<br>' + section.from_name + '——' + section.target_name + '<br>MS ：' + ave_speed + ' km/h')
             .addTo(self.map)
-            .on("click", function () {
+            .on('click', function () {
               section_speed_view.getSectionAllSpeed(section);
               if (current_section_marker !== null)
                 current_section_marker.setStyle({
                   weight: 3,
                   color: speed_color(reflect(ave_speed))
                 });
-              section_marker.setStyle({weight: 5, color: "#2EE0FF"});
+              section_marker.setStyle({weight: 5, color: '#2EE0FF'});
               current_section_marker = section_marker;
             });
-        }
-        else {
+        } else {
           section_marker = L.polyline(path, {
-            color: "gray",
+            color: 'gray',
             weight: 2,
             opacity: 1
-          }).bindPopup("ID：" + section.section_id + "<br>" + section.from_name + "——" + section.target_name + "<br>MS ：no data!")
+          }).bindPopup('ID：' + section.section_id + '<br>' + section.from_name + '——' + section.target_name + '<br>MS ：no data!')
             .addTo(self.map)
-            .on("click", function () {
+            .on('click', function () {
               section_speed_view.getSectionAllSpeed(section);
               if (current_section_marker !== null)
-                current_section_marker.setStyle({weight: 3, color: "gray"});
-              section_marker.setStyle({weight: 5, color: "#2EE0FF"});
+                current_section_marker.setStyle({weight: 3, color: 'gray'});
+              section_marker.setStyle({weight: 5, color: '#2EE0FF'});
               current_section_marker = section_marker;
             });
         }
         section_markers.set(section.section_id, section_marker);
       },
       Error: function () {
-        console.log("获取数据失败");
+        console.log('获取数据失败');
       }
     });
   }
@@ -369,8 +370,8 @@ function MapViewClass() {
     var stationStyle;
     stationStyle = {
       radius: scale(r),
-      fillColor: "#FDBB84",
-      color: "black",
+      fillColor: '#FDBB84',
+      color: 'black',
       weight: 1,
       opacity: 1,
       fillOpacity: 1
@@ -382,35 +383,35 @@ function MapViewClass() {
   function newPopupDiv(data) {
     var div = document.createElement('div');
     var station_name = document.createElement('h4');
-    station_name.innerHTML = data.station_name + " " + data.station_id;
+    station_name.innerHTML = data.station_name + ' ' + data.station_id;
     var routes_length = document.createElement('h5');
-    routes_length.innerHTML = "There are <span style='color:red'>" + data.routes_number + "</span> routes to this station";
+    routes_length.innerHTML = 'There are <span style=\'color:red\'>' + data.routes_number + '</span> routes to this station';
     var sub_length = document.createElement('h5');
-    sub_length.innerHTML = "There are <span style='color:red'>" + data.sub_routes_number + "</span> sub routes to this station";
+    sub_length.innerHTML = 'There are <span style=\'color:red\'>' + data.sub_routes_number + '</span> sub routes to this station';
     var ul_route = document.createElement('ul');
-    ul_route.className = "PopupDivUl";
+    ul_route.className = 'PopupDivUl';
     var ul_sub = document.createElement('ul');
-    ul_sub.className = "PopupDivUl";
+    ul_sub.className = 'PopupDivUl';
     var routes = data.routes_id.split(',');
     for (var i = 0; i !== routes.length; ++i) {
       var li_route = document.createElement('li');
-      li_route.className = "PopupDivLi";
+      li_route.className = 'PopupDivLi';
       li_route.id = routes[i];
-      li_route.innerHTML = "NO." + routes[i] + " ";
+      li_route.innerHTML = 'NO.' + routes[i] + ' ';
       ul_route.appendChild(li_route);
     }
     var sub_routes = data.sub_routes_id.split(',');
     for (i = 0; i !== sub_routes.length; i++) {
       var li_sub = document.createElement('li');
-      li_sub.className = "PopupDivLi";
+      li_sub.className = 'PopupDivLi';
       li_sub.id = sub_routes[i];
-      li_sub.innerHTML = "NO." + "<span style='color:blue'>" + sub_routes[i] + " </span>";
+      li_sub.innerHTML = 'NO.' + '<span style=\'color:blue\'>' + sub_routes[i] + ' </span>';
       li_sub.onclick = function (i) {
         return function () {
           if (sub_route_markers.get(sub_routes[i]).length === 0) {
             self.showOrUpdateOneSubRoute(sub_routes[i]);
           }
-        }
+        };
       }(i);
       ul_sub.appendChild(li_sub);
     }
@@ -424,23 +425,23 @@ function MapViewClass() {
 
   //创建刷子
   function createBrush() {
-    var time_brush_width = $("#time_brush").width();
-    var time_brush_height = $("#time_brush").height();
-    var time_svg = d3.select("#time_brush")
-      .append("svg")
-      .attr("width", time_brush_width)
-      .attr("height", time_brush_height);
+    var time_brush_width = $('#time_brush').width();
+    var time_brush_height = $('#time_brush').height();
+    var time_svg = d3.select('#time_brush')
+      .append('svg')
+      .attr('width', time_brush_width)
+      .attr('height', time_brush_height);
     var padding = {left: 30, right: 30, top: 10, bottom: 20};
     var x_scale = d3.time.scale()
       .domain([new Date('2016-1-1'), new Date('2016-2-1')])
       .range([0, time_brush_width - padding.left - padding.right]);
     var x_axis = d3.svg.axis()
       .scale(x_scale)
-      .orient("bottom");
+      .orient('bottom');
 
-    time_svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(" + padding.left + "," + (time_brush_height - padding.bottom) + ")")
+    time_svg.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(' + padding.left + ',' + (time_brush_height - padding.bottom) + ')')
       .call(x_axis);
 
     function brushEnd() {
@@ -460,19 +461,19 @@ function MapViewClass() {
           if (sub_route_markers.get(item.sub_route_id).length !== 0) {
             self.showOrUpdateOneSubRoute(item.sub_route_id);
           }
-        })
+        });
       }
     }
 
     var brush = d3.svg.brush()
       .x(x_scale)
       .extent(x_scale.domain())
-      .on("brushend", brushEnd);
-    time_svg.append("g")
-      .attr("class", "brush")
-      .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
+      .on('brushend', brushEnd);
+    time_svg.append('g')
+      .attr('class', 'brush')
+      .attr('transform', 'translate(' + padding.left + ',' + padding.top + ')')
       .call(brush)
-      .selectAll("rect").attr("height", time_brush_height - padding.top - padding.bottom);
+      .selectAll('rect').attr('height', time_brush_height - padding.top - padding.bottom);
   }
 
   function onMouseDown(e) {
@@ -598,15 +599,15 @@ function MapViewClass() {
           graph = L.circle(mouse_down_point, {
             radius: distance,
             weight: 1,
-            color: "black",
-            fillColor: "black",
+            color: 'black',
+            fillColor: 'black',
             fillOpacity: 0.3
           }).addTo(self.map);
-            for (var i = 0; i !== stations_info.length; ++i) {
-                if (gpsDistance(stations_info[i].latitude, stations_info[i].longitude, mouse_down_point.lat, mouse_down_point.lng) < graph._mRadius) {
-                    self.showStation(stations_info[i]);
-                }
+          for (var i = 0; i !== stations_info.length; ++i) {
+            if (gpsDistance(stations_info[i].latitude, stations_info[i].longitude, mouse_down_point.lat, mouse_down_point.lng) < graph._mRadius) {
+              self.showStation(stations_info[i]);
             }
+          }
           break;
         }
         case 2: {
@@ -614,8 +615,8 @@ function MapViewClass() {
           var bounds = [[mouse_down_point.lat, mouse_down_point.lng], [position.lat, position.lng]];
           graph = L.rectangle(bounds, {
             weight: 1,
-            color: "black",
-            fillColor: "black",
+            color: 'black',
+            fillColor: 'black',
             fillOpacity: 0.3
           }).addTo(self.map);
           break;
@@ -626,8 +627,8 @@ function MapViewClass() {
           graph = L.circle(mouse_down_point, {
             radius: distance,
             weight: 1,
-            color: "black",
-            fillColor: "black",
+            color: 'black',
+            fillColor: 'black',
             fillOpacity: 0.1
           }).addTo(self.map);
           break;
@@ -670,7 +671,7 @@ function MapViewClass() {
     });
     stations_info.forEach(function (d) {
       removeStation(d.station_id);
-    })
+    });
   }
 
 }
